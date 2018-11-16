@@ -1,0 +1,1034 @@
+/*
+Theme Name: Themify Shoppe Child
+Description: Child theme for Themify Shoppe
+Author: Jasdev Singh (Jazzy) (jazzy@starclinch.com)
+Template: themify-shoppe
+*/
+
+/* write custom css below */
+
+/* hide youtube gallery and other non working shizz in product lightbox view */
+/* #post-lightbox-wrap .product_meta .entry-title:nth-child(1) {
+	display: none!important;
+} */
+
+
+
+
+/* wedding tag page css */
+.column {
+    float: left;
+    width: 50%;
+    padding: 40px;
+	box-sizing: border-box;
+}
+
+.columnq {
+    float: left;
+    width: 50%;
+    height: 400px;
+    padding: 0px;
+    box-sizing: border-box;
+    border: 5px solid #fffaf4;
+}
+
+.column-nopadding {
+	padding: 0px;
+}
+
+.column-quarter {
+	width: 25%;
+	box-sizing: border-box;
+	float: left;
+	padding: 30px;
+}
+
+.column-third {
+	width: 33%;
+	box-sizing: border-box;
+	float: left;
+	padding: 30px;
+}
+
+.column-quarter .card {
+	background: #fff;
+	box-shadow: none;
+}
+
+.column-quarter .card:hover {
+	background: #fff;
+	box-shadow: none;
+}
+
+.column-quarter .card h4 {
+	letter-spacing: 3px;
+}
+
+.column-quarter .card img {
+	border-radius: 50%;
+}
+
+.columnq-color {
+	background: #f8eee3;
+	text-align: center;
+}
+
+.columnq h2 {
+	font-size: 3em;
+	color: #90693a;
+	font-family: WeddingFont;
+	text-align: center;
+	margin-block-start: 0.3em;
+	margin-block-end: 0em;
+	padding: 5px;
+}
+
+.columnq p {
+	font-size: 1.2em;
+	color: #000000;
+	font-family: WeddingSubFont;
+	text-align: center;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.columnq a {
+	font-family: WeddingSubFont;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    border: solid 1px #a8753f;
+    text-align: center;	
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: #a8753f;
+    color: #FFF;
+    padding: 8px 12px;
+    text-decoration: none;
+}
+
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media screen and (max-width: 600px) {
+    .column {
+        width: 100%;
+    }
+    .columnq {
+        width: 50%;
+    }
+	.column-quarter {
+		width: 100%;
+	}
+	.column-third {
+		width: 100%;
+	}
+}
+.card {
+    /* Add shadows to create the "card" effect */
+    padding-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+    transition: 0.3s;
+    background: #fde5f2;
+    font-family: WeddingSubFont;
+    font-size: 1.2em;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 4px 8px 0 rgba(50,50,50,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+    /*padding: 2px 16px;*/
+    padding: 0px;
+	padding-top:10px;
+	font-size: 0.8em;
+}
+
+.container p{
+    padding: 10px 26px;
+    font-size: 1.4em;
+	font-weight: 600;
+	line-height: 30px;
+	text-align: center;
+}
+
+.unique-acts h2 {
+	line-height: 40px;
+}
+
+.unique-acts p {
+	padding-top: 20px;
+}
+
+.testimonials .container p{
+    padding: 10px 6px;
+    font-size: 1.1em;
+	line-height: 25px;
+	text-align: center;
+}
+
+.wedding-milestone .container p{
+    padding: 10px 16px;
+    font-size: 1em;
+	line-height: 30px;
+	text-align: center;
+}
+
+.videoWrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	/*padding-top: 25px;*/
+	height: 0;
+}
+
+.videoWrapper p {
+	
+}
+
+.videoWrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.videoWrapper2 {
+	position: relative;
+	padding-bottom: 0px; /* 16:9 */
+	padding-top: 0px;
+	height: 100%;
+}
+
+.videoWrapper2 iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.card a {
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    border: solid 1px #d11f1f;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: #d11f1f;
+    color: #FFF;
+    padding: 8px 12px;
+    text-decoration: none;
+	font-size: 1.5em;
+}
+
+@font-face {
+    font-family: WeddingFont;
+    src: url(https://stardev.wpengine.com/wp-content/themes/themify-shoppe-child/fonts/p-and-c-regular.otf);
+}
+
+@font-face {
+    font-family: WeddingSubFont;
+    src: url(https://stardev.wpengine.com/wp-content/themes/themify-shoppe-child/fonts/futura-lt-ight.ttf);
+}
+
+.wedding-title {
+	font-size: 5em;
+	font-weight: 300;
+	color: #90693a;
+	font-family: WeddingFont;
+	text-align: center;
+	margin-block-start: 0.3em;
+	margin-block-end: 0em;
+}
+
+.wedding-subtitle {
+	font-size: 1.5em;
+	color: #000000;
+	font-family: WeddingSubFont;
+	font-weight: 600;
+	text-align: center;
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+@media screen and (max-width: 600px) {
+   .wedding-title {
+	    font-size: 3em;
+	    font-weight: 300;
+	    color: #90693a;
+	    font-family: WeddingFont;
+	    text-align: center;
+	    margin-block-start: .3em;
+	    margin-block-end: 0.8em;
+	    line-height: 50px;
+	}
+
+	.wedding-subtitle {
+	    font-size: 1.1em;
+	}
+}
+
+.wedding-milestone {
+	background: #160404;
+}
+
+.wedding-milestone .card {
+	background: none;
+}
+
+.wedding-milestone .card h4 {
+	color: yellow;
+	font-size: 1.5em;
+	margin-block-start: 0.33em;
+    margin-block-end: 0.33em;
+}
+
+.wedding-milestone .card p {
+	color: white;
+	font-size: 1.2em;
+	letter-spacing: 3px;
+}
+
+.wedding-text-white {
+	color: white!important;
+}
+
+.black-strip {
+	background: black;
+	width: 100%;
+	font-size: 20px;
+	padding: 20px 0;
+	padding-top: 60px;
+	line-height: 17px!important;
+	font-weight: 300!important;
+}
+
+@media screen and (max-width: 600px) {
+    .black-strip {
+		background: black;
+		width: 100%;
+		font-size: 20px;
+		padding: 20px 0;
+		padding-top: 30px;
+		line-height: 35px!important;
+		font-weight: 300!important;
+	}
+}
+
+.white {
+	color: white;
+}
+
+.pink {
+	color: pink;
+}
+
+/* end wedding tag page css */
+
+/* fullwidth container on tag page */
+
+
+
+.tax-product_tag #content {
+	width: 100%!important;
+}
+
+.tax-product_tag #sidebar {
+	display: none!important;
+}
+
+.tax-product_tag .woocommerce-breadcrumb {
+	display: none!important;
+}
+
+.tax-product_tag .woocommerce-products-header {
+	display: none!important;
+}
+
+.tax-product_tag #layout {
+	width: 100%!important;
+	max-width: 100%!important;
+}
+
+.tax-product_tag .wpf-search-container {
+	padding: 0 10%!important;
+}
+
+@media only screen and (max-width: 700px) {
+	.tax-product_tag .wpf-search-container {
+		padding: 2%!important;
+	}
+}
+
+.tax-product_tag .wpf-search-container p:first-child {
+	max-height: 150px!important;
+    overflow: hidden!important;
+}
+
+/* end fullwidth container on tag page */
+
+
+
+
+
+/* browse page cart button customize */
+.woocommerce ul.products li.product .add_to_cart_button {
+	text-align: center!important;
+    line-height: 20px!important;
+}
+/* end */
+
+/* artist events on their profile */
+.e-post-container {
+    margin: 20px 20px 0 0;  
+    border: 1px solid #00000010;
+	padding: 5px;
+    overflow: auto;
+}
+.e-post-thumb {
+    float: left;
+}
+.e-post-thumb img {
+    display: block;
+	width: 96px;
+}
+.e-post-content {
+    margin-left: 110px;
+	text-align: left;
+	text-transform: capitalize;
+}
+.e-post-title {
+    font-weight: bold;
+    font-size: 1em;
+	text-align: left;
+	text-transform: capitalize;
+}
+/* end */
+
+
+/* Light and Responsive YouTube Embeds */
+.youtube-player {
+	position: relative;
+	padding-bottom: 56.23%;
+	/* Use 75% for 4:3 videos */
+	height: 0;
+	overflow: hidden;
+	max-width: 100%;
+	width: 100%;
+	background: #ffffffff;
+	margin: 5px;
+}
+
+.youtube-player iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	background: transparent;
+}
+
+.youtube-player img {
+	bottom: 0;
+	display: block;
+	left: 0;
+	margin: auto;
+	max-width: 100%;
+	width: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	border: none;
+	height: auto;
+	cursor: pointer;
+	-webkit-transition: .4s all;
+	-moz-transition: .4s all;
+	transition: .4s all;
+}
+
+.youtube-player img:hover {
+	-webkit-filter: brightness(75%);
+}
+
+.youtube-player .play {
+	height: 72px;
+	width: 72px;
+	left: 50%;
+	top: 50%;
+	margin-left: -36px;
+	margin-top: -36px;
+	position: absolute;
+	background: url("//i.imgur.com/TxzC70f.png") no-repeat;
+	cursor: pointer;
+}
+
+/* end Light and Responsive YouTube Embeds */
+
+
+/* 404 page heading */
+.themify_builder .plain-text-74138-0-0-0.module-plain-text {
+	line-height: 50px!important;
+}
+/* end */
+
+/* start: controls width of pyr form on top of every category, archive and product page */
+.pyrontop{
+	text-align:center;
+	padding-left:20%;
+	padding-right:20%;
+}
+@media only screen and (max-width: 480px) {
+	.pyrontop{
+		text-align:center;
+		padding-left:5%;
+		padding-right:5%;
+		margin-bottom: 30px;
+	}
+}
+/* end:  */
+
+
+.product .related .fancy-heading {
+	display:none!important;
+}
+
+.product .related .loops-wrapper{
+	margin-top: 30px!important;
+}
+
+.product .related:before {
+	content: 'Related Artists'!important;
+	color: #dcaa2e;
+    font-family: selimaregular;
+    font-size: 5em;
+    line-height: 1em;
+    font-weight: normal;
+    line-height: .9;
+    letter-spacing: .007em;
+    text-align: center;
+}
+
+.product-lightbox .product h1:nth-child(3) {
+	display: none!important;
+}
+
+#post-lightbox-wrap .product_meta .eytg_main_container .easy_youtube_gallery {
+	display: none!important;
+}
+
+#page-13 .product-description {
+	display:none!important;	
+}
+
+.dgwt-wcas-search-input {
+	height: 50px!important;
+    font-size: 20px!important;	
+}
+
+.easy_youtube_gallery .eytg-item {
+	padding: 15px;
+}
+
+.fusion-main-menu .fusion-main-menu-search .fusion-custom-menu-item-contents {
+  
+    padding: 0px !important; 
+		margin-top: 7px;
+}
+
+.woocommerce-Tabs-panel--about {
+	text-align: justify;
+    text-justify: auto;
+}
+
+.wcfm_catalog_enquiry {
+    background: #3d3d3d;
+    padding: 15px 50px!important;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: #f0f0f0 1px solid;
+    border-bottom: 1px solid #00798b;
+    color: #ffffff;
+    float: none!important;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 20px !important;
+    -webkit-box-shadow: 0 1px 0 #ccc;
+    box-shadow: 0 1px 0 #ccc;
+    display: unset!important;
+    cursor: pointer;
+}
+
+.woocommerce .product_title {
+    font-family: 'selimaregular' !important;
+    font-size: 4em!important;
+}
+
+@media only screen and (max-width: 480px) {
+	.home .loops-wrapper .product_title {
+		font-size: 1.1em!important;
+		font-family: unset!important;
+	}
+}
+
+.home .loops-wrapper .product_title {
+	font-size: 1.3em!important;
+	font-family: unset!important;
+}
+
+
+.wcfm_enquiry_reviews ol.wcfm_enquiry_list li.wcfm_enquiry_item .wcfm_enquiry_container .comment-text {
+    padding: unset !important;
+    text-align: left !important;
+}
+
+/* .related .fancy-heading {
+    display: none;
+}
+
+.fancy-heading:after {
+    content: 'Artists';
+	font-size: 4em; 
+	text-align: center;
+	font-family: 'selimaregular' !important;
+	color: #000 !important;
+} */
+
+#wcfm_products_manage_form_availability_head {
+	display: none !important;
+}
+
+.wc-bookings-date-picker {
+	font: 1em 'Libre Franklin',sans-serif !important;
+}
+
+.wc-bookings-date-picker legend {
+	display: none !important;
+}
+
+.woocommerce-Tabs-panel--description {
+	text-align: justify;	
+}
+
+.woocommerce-Tabs-panel--additional_information {
+	margin-top: 70px!important;
+}
+
+.woocommerce-Tabs-panel--additional_information::before{
+	content: 'Performance Details'!important;
+	font-size: 4em; 
+	text-align: center;
+	font-family: 'selimaregular' !important;
+	color: #000 !important;
+}
+
+.woocommerce-Tabs-panel--additional_information::after{
+	content: '';
+    border-bottom: 1px solid #efbe5a;
+    width: 30px;
+    margin-top: 1.2em;
+}
+
+.woocommerce-Tabs-panel--reviews {
+	margin-top:80px!important;
+}
+
+.woocommerce-Tabs-panel--reviews::before {
+	content: 'Reviews'!important;
+	font-size: 4em; 
+	text-align: center;
+	font-family: 'selimaregular' !important;
+	color: #000 !important;
+}
+
+.woocommerce-Reviews {
+	margin-top: 20px!important;
+}
+
+.shop_attributes {
+	margin-top: 70px!important;
+}
+
+.woocommerce-Price-amount {
+	display: none!important;	
+}
+
+.single_add_to_cart_button {
+	width: 65%!important;
+	font-size: 1.5em!important;
+	margin: 0 auto !important;
+	margin-top: 20px!important;
+	display: block!important;
+}
+
+.cart .product-share-wrap {
+	margin-top: 20px!important;
+}
+
+.cart .wishlist-button:before {
+	font-size: 3em!important;	
+	color: #c13131!important;
+}
+
+.cart .wishlist-button.wishlisted {
+	background-color: unset!important;
+	animation: beat 1s infinite alternate;
+	transform-origin: center;
+}
+
+@keyframes beat{
+	to { transform: scale(1.1); }
+}
+
+
+.cart .share-button:before {
+	font-size: 3em!important;
+	color: #33337b!important;
+}
+
+.cart .product-share-wrap .wishlist-wrap {
+	margin-right: 20px!important;
+	margin-top: 3px !important;
+}
+
+.cart .product-share-wrap .share-wrap {
+	margin-left: 20px!important;
+}
+
+.cart .quantity {
+	display: none!important;
+}
+
+#wl-wrapper {
+	margin-top: 20px!important;
+}
+
+.wl-already-in {
+	color: white!important;	
+}
+
+.wl-already-in ul:before {
+	content: "This Artist is already in one of your wishlists:"!important;
+	color: #666!important;
+}
+
+.wishlist-button:before {
+	color: #c13131!important;
+}
+
+.nf-after-form-content, .nf-before-form-content {
+	display: none!important;
+}
+
+.nf-error-msg {
+	color: white!important;
+}
+
+.footer-text {
+	opacity: 1!important;	
+	margin-bottom: -20px !important;
+}
+
+/* #nf-field-6, #nf-field-8, #nf-field-10, #nf-field-12 {
+	padding: 10px!important;
+    background: #d2a535!important;
+    color: white!important;
+    border: 0 none!important;
+} */
+
+.woocommerce-form-coupon-toggle, .woocommerce-message {
+	display: none!important;
+}
+
+#order_review_heading, .woocommerce-checkout-review-order-table tfoot {
+	display: none!important;
+}
+
+.woocommerce-checkout-review-order-table th:nth-child(2) {
+	display: none!important;
+}
+
+.woocommerce-checkout-review-order-table .product-quantity {
+	display: none!important;
+}
+
+/* .woocommerce-checkout-review-order-table tr:before {
+	content: "Artist";
+}
+
+.woocommerce-checkout-review-order-table th:nth-child(1) {
+	display:none!important;
+}
+ */
+
+
+.woocommerce-order .woocommerce-order-details {
+	display:none!important;
+}
+
+.woocommerce-order .woocommerce-column__title , .woocommerce-order .woocommerce-order-details__title{
+	display: none!important;	
+}
+
+.woocommerce-table--order-details tfoot {
+	display:none!important;
+}
+
+.woocommerce-table--order-details th:nth-child(2) {
+	display: none!important;
+}
+
+.woocommerce-table--order-details .product-quantity {
+	display: none!important;
+}
+
+.woocommerce-thankyou-order-details li:nth-child(1) {
+	display: none!important;
+}
+
+.woocommerce-thankyou-order-details li:nth-child(3) {
+	display: none!important;
+}
+
+.woocommerce-thankyou-order-details li:nth-child(4) {
+	display: none!important;
+}
+
+.woocommerce-thankyou-order-received {
+	display: none!important;
+}
+
+.woocommerce-order-received .page-content {
+	margin-top: 30px!important;
+}
+
+#slide-cart .quantity-count {
+	display: none!important;
+}
+
+/* get quote page customizations  */
+
+
+/* hide "Returning customer? Click here to login" on checkout */
+.woocommerce-form-login-toggle {
+	display:none!important;
+}
+/* end */
+
+/* hide "Returning customer? Click here to login" on checkout */
+.woocommerce-account-fields {
+	display:none!important;
+}
+/* end */
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table {
+	display: none!important;
+} 
+
+.woocommerce-checkout .woocommerce-billing-fields h3 {
+	display: none!important;
+}
+
+.woocommerce-checkout .woocommerce-additional-fields h3 {
+	display: none!important;
+}
+
+.woocommerce-checkout .woocommerce-additional-fields img {
+	width: 128px!important;
+}
+
+.woocommerce-checkout .place-order {
+	text-align:center!important;
+}
+
+.woocommerce-checkout #place_order {
+	float:none!important;
+	font-size: 1.3em!important;
+}
+
+.woocommerce-checkout .shop_table thead {
+	display: none!important;
+}
+
+.woocommerce-checkout .shop_table tbody .button {
+	display: none!important;
+}
+
+.woocommerce-checkout table.cart img {
+    width: 72px!important; 
+}
+
+@media only screen and (max-width : 760px) {
+	.woocommerce table.shop_table td {
+		border: none!important;
+	}
+	
+	.woocommerce-page table.shop_table_responsive tr td {
+		text-align: center!important;
+	}
+	
+	.woocommerce-checkout .product-thumbnail {
+		display: block!important;
+		text-align:center!important;
+	}
+	
+	.woocommerce-checkout .product-thumbnail:before {
+		content: ''!important;
+	}
+	
+	.woocommerce-checkout table.cart img {
+		width: 128px!important; 
+	}
+
+	.woocommerce-checkout .product-name {
+		border-bottom: 1px solid rgba(0,0,0,.5); 
+		text-align:center!important;
+	}
+	
+	.woocommerce-checkout .product-name:before {
+		content: ''!important;
+	}
+	
+	.woocommerce-checkout .product-price {
+		display: none!important;
+	}
+	
+	.woocommerce-checkout .product-quantity {
+		display: none!important;
+	}
+	
+	.woocommerce-checkout .product-subtotal {
+		display: none!important;
+	}
+}
+
+@media only screen and (max-width : 768px) {
+
+	.col2-set { 
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex!important;
+		-webkit-box-orient: vertical;
+		-moz-box-orient: vertical;
+		-webkit-flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column!important;
+		/* optional */
+		-webkit-box-align: start;
+		-moz-box-align: start;
+		-ms-flex-align: start;
+		-webkit-align-items: flex-start;
+		align-items: flex-start!important;
+	}
+	
+	.col-1{    
+		-webkit-box-ordinal-group: 1;
+		-moz-box-ordinal-group: 1;
+		-ms-flex-order: 1;
+		-webkit-order: 1;
+		order: 2!important;
+		padding: 0!important;
+		margin-top: 0!important;
+	}
+	
+	.col-2 {     
+		-webkit-box-ordinal-group: 2;
+		-moz-box-ordinal-group: 2;
+		-ms-flex-order: 2;
+		-webkit-order: 2;
+		order: 1!important;
+		padding: 0!important;
+	}
+}
+/* end get quote page customizations  */
+
+/* start filter layout move to top */
+@media only screen and (max-width : 760px) {
+
+	#layout{ 
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex!important;
+		-webkit-box-orient: vertical;
+		-moz-box-orient: vertical;
+		-webkit-flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column!important;
+		/* optional */
+		-webkit-box-align: start;
+		-moz-box-align: start;
+		-ms-flex-align: start;
+		-webkit-align-items: flex-start;
+		align-items: flex-start!important;
+	}
+	
+	#sidebar{    
+		-webkit-box-ordinal-group: 1;
+		-moz-box-ordinal-group: 1;
+		-ms-flex-order: 1;
+		-webkit-order: 1;
+		order: 1!important;
+		padding: 0!important;
+		margin-top: 0!important;
+	}
+	
+	#content {     
+		-webkit-box-ordinal-group: 2;
+		-moz-box-ordinal-group: 2;
+		-ms-flex-order: 2;
+		-webkit-order: 2;
+		order: 2!important;
+		padding: 0!important;
+	}
+	
+	.woocommerce-breadcrumb, .woocommerce-products-header, .woocommerce-ordering, .woocommerce-result-count {
+		text-align: center!important;
+	}
+}
+/* end filter layout move to top */
+
+
+@media only screen and (max-width: 480px) {
+
+	.single_add_to_cart_button {
+		width: 100%!important;
+	}
+	
+	.woocommerce .product_title {
+    	font-family: 'selimaregular' !important;
+    	font-size: 3em!important;
+	}
+	.easy_youtube_gallery[class*='col-'] .eytg-item {
+		width: 50% !important;
+		padding: 10px 15px;
+	}
+	
+	.easy_youtube_gallery .eytg-item .eytg-thumbnail:before {
+		    transform: scale(0.45);
+	}
+
+	body:not(.product-img-right):not(.product-img-left).woocommerce.sidebar-none div.product .woocommerce-tabs .panel {
+	padding-left: unset;
+  padding-right: unset;
+	}
+}
+
