@@ -280,6 +280,7 @@ function woo_after_main_content() {
 	global $wp;
 	$pageUrl = $wp->request;
 	if (strpos($pageUrl, 'book-online') !== false) {
+		if (strpos($pageUrl, 'book-online/wedding') !== false) {
 		echo '
 	<div>
 		<h2 class="wedding-title">Unique Wedding Entertainment Acts</h2>
@@ -353,7 +354,10 @@ function woo_after_main_content() {
 			</div>
 		</div>
 	</div>
-	<br/><br/>
+	<br/><br/>';
+		}
+		// Testimonials
+		echo '
 	<div>
 		<h2 class="wedding-title">What Clients Say About Us</h2>
 		<p class="wedding-subtitle">
