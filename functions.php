@@ -508,6 +508,7 @@ function woo_thank_you_custom($order_id) { //<--check this line
     echo '</div>';
 }
 
+
 // custom order thank you page title : not working
 // add_filter( 'wpex_title', 'woo_custom_title_order_received', 99 );
 // function woo_custom_title_order_received( $title, $id ) {
@@ -517,5 +518,47 @@ function woo_thank_you_custom($order_id) { //<--check this line
 // 	}
 // 	return $title;
 // }
+
+add_action('signup_integromat', 'signup_integromat');
+function signup_integromat($data){
+	$url = 'https://hook.integromat.com/9d8y1he9l063hjkd4tillq5fog7j2ctb';
+	$options = array(
+		'http' => array(
+			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method'  => 'POST',
+			'content' => http_build_query($data)
+		)
+	);
+	$context  = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
+}
+
+add_action('bid_integromat', 'bid_integromat');
+function bid_integromat($data){
+	$url = 'https://hook.integromat.com/6gxa5ic3kezj8fqsv4xyozc6t9jrbwdi';
+	$options = array(
+		'http' => array(
+			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method'  => 'POST',
+			'content' => http_build_query($data)
+		)
+	);
+	$context  = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
+}
+
+add_action('qualify_integromat', 'qualify_integromat');
+function qualify_integromat($data){
+	$url = 'https://hook.integromat.com/vymwppu4hpjn51coe1sqiagzp33w5i91';
+	$options = array(
+		'http' => array(
+			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method'  => 'POST',
+			'content' => http_build_query($data)
+		)
+	);
+	$context  = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
+}
 
 ?>
