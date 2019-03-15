@@ -453,59 +453,124 @@ function woo_after_main_content() {
 add_action('woocommerce_thankyou', 'woo_thank_you_custom', 10, 1);
 
 function woo_thank_you_custom($order_id) { //<--check this line
-
-	
-
-    $order = wc_get_order($order_id); 
-
-    $orderusername = $order->get_billing_first_name();
-    $orderemail = $order->get_billing_email();
-    $orderphone = $order->get_billing_phone();
-    $orderstat = $order->get_status();
-    $view_order_url = $order->get_view_order_url();   
-
-    foreach ($order->get_items() as $item_id => $item) {
-        $product = $item->get_product();
-        $product_id = null;
-        if (is_object($product)) {
-            $product_id = $product->get_id();
-            $product_name = $product->get_title();
-            $url = get_permalink( $product_id );
-            $image = wp_get_attachment_image_src(get_post_thumbnail_id($product_id), 'single-post-thumbnail');
-            
-            echo '<div style="text-align:center">';
-            echo '<a style="font-size: 1.3em;" href="' . $url . '"> 
-            		<img src="' . $image[0] . '" style="width:200px;">
-            		<p>' . $product_name . '</p>
-            	 </a>';
-            echo '</div>';
-        }
-    }
-
-    echo '<div style="text-align:center">';
-    // echo $orderusername;
-    // echo $orderemail;
-    // echo $orderphone;
-	// echo $view_order_url;
-
-    if (($orderstat == 'completed')) {
-        echo "<h2>Your request has been completed.</h2>";
-    } 
-    elseif (($orderstat == 'processing')) {
-        echo "<h2>Your request has been received.</h2>";
-    } 
-    elseif (($orderstat == 'pending')) {
-        echo "<h2>Your request has been received.</h2>";
-    }
-
-    // echo "<h2>Subscribe to push notification updates on your request.</h2><br/>";
-    // echo '<button onclick="window._izq = window._izq||[]; window._izq.push([\'triggerPrompt\']);">Subscribe</button>';
-    // echo '<button onclick=\'window._izq.push(["updateSubscription","subscribe"]);\'>Subscribe</button>';
-	// echo '<button onclick=\'window._izq.push(["updateSubscription","unsubscribe"]);\'>Unsubscribe</button>';
-
-    echo '<br/><br/><p>If you dont hear from us withing 12 hours, contact us on the email or phone number mentioned at the bottom of this page.</p>';
-
-    echo '</div>';
+	session_start();
+	$order = wc_get_order($order_id);
+	$orderusername = $order->get_billing_first_name();
+	$orderemail = $order->get_billing_email();
+	$orderphone = $order->get_billing_phone();
+	$mess='';
+	if(!isset($_SESSION['otp'])){
+		$_SESSION['otp']=rand(100000, 999999);
+		$mess="Dear $orderusername, Your OTP for verifying your query on StarClinch is ".$_SESSION['otp']." . Kindly verify to confirm your identity.";
+		file_get_contents("http://msg.mtalkz.com/V2/http-api.php?apikey=-----mTalkz-key-------&senderid=STARCL&number=$orderphone&message=".str_replace(' ', '%20', $mess)."&format=json");
+		echo "<div style='text-align:center';>
+		  <h4>Please enter the OTP below</h4>
+		  <form method=post>
+		    <input name=otp-value type=number required/><br><br>
+		    <input type=submit value='Submit otp' />
+		  </form>
+		  <br>
+		  <form method=post>
+		  	<input type=hidden name='resend-otp' value=0>
+		  	<input type='submit' value='resend otp' />
+		  </form>
+		</div>";
+	}
+	elseif (isset($_POST['resend-otp'])) {
+		$mess="Dear $orderusername, Your OTP for verifying your query on StarClinch is ".$_SESSION['otp']." . Kindly verify to confirm your identity.";
+		file_get_contents("http://msg.mtalkz.com/V2/http-api.php?apikey=-----mTalkz-key-------&senderid=STARCL&number=$orderphone&message=".str_replace(' ', '%20', $mess)."&format=json");
+		echo "<div style='text-align:center';>
+		  <h4>OTP has been resent<br>Please enter the OTP below</h4>
+		  <form method=post>
+		    <input name=otp-value type=number required/><br><br>
+		    <input type=submit value='Submit otp' />
+		  </form>
+		  <br>
+		  <form method=post>
+		  	<input type=hidden name='resend-otp' value=0>
+		  	<input type='submit' value='resend otp' />
+		  </form>
+		</div>";	
+	}
+	elseif (isset($_POST['otp-value'])) {
+		if($_SESSION['otp']==$_POST['otp-value']){
+			$url = 'https://hook.integromat.com/kqqnz5q25cw2dis0aibq6bfu7ly259ip';
+			$options = array(
+				'http' => array(
+					'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+					'method'  => 'POST',
+					'content' => http_build_query(array('email' => $orderemail, 'phone' => $orderphone, 'name' => $orderusername))
+				)
+			);
+			$context  = stream_context_create($options);
+			file_get_contents($url, false, $context);
+		    $orderstat = $order->get_status();
+		    $view_order_url = $order->get_view_order_url();   
+		    foreach ($order->get_items() as $item_id => $item) {
+		        $product = $item->get_product();
+		        $product_id = null;
+		        if (is_object($product)) {
+		            $product_id = $product->get_id();
+		            $product_name = $product->get_title();
+		            $url = get_permalink( $product_id );
+		            $image = wp_get_attachment_image_src(get_post_thumbnail_id($product_id), 'single-post-thumbnail');
+		            
+		            echo '<div style="text-align:center">';
+		            echo '<a style="font-size: 1.3em;" href="' . $url . '"> 
+		            		<img src="' . $image[0] . '" style="width:200px;">
+		            		<p>' . $product_name . '</p>
+		            	 </a>';
+		            echo '</div>';
+		        }
+		    }
+		    echo '<div style="text-align:center">';
+		    // echo $orderusername;
+		    // echo $orderemail;
+		    // echo $orderphone;
+			// echo $view_order_url;
+		    if (($orderstat == 'completed')) {
+		        echo "<h2>Your request has been completed.</h2>";
+		    } 
+		    elseif (($orderstat == 'processing')) {
+		        echo "<h2>Your request has been received.</h2>";
+		    } 
+		    elseif (($orderstat == 'pending')) {
+		        echo "<h2>Your request has been received.</h2>";
+		    }
+		    // echo "<h2>Subscribe to push notification updates on your request.</h2><br/>";
+		    // echo '<button onclick="window._izq = window._izq||[]; window._izq.push([\'triggerPrompt\']);">Subscribe</button>';
+		    // echo '<button onclick=\'window._izq.push(["updateSubscription","subscribe"]);\'>Subscribe</button>';
+			// echo '<button onclick=\'window._izq.push(["updateSubscription","unsubscribe"]);\'>Unsubscribe</button>';
+		    echo '<br/><br/><p>If you dont hear from us withing 12 hours, contact us on the email or phone number mentioned at the bottom of this page.</p>';
+		    echo '</div>';
+		}
+		else
+			echo "<div style='text-align:center';>
+		  <h4>Wrong OTP entered<br>Please enter the correct OTP</h4>
+		  <form method=post>
+		    <input name=otp-value type=number required/><br><br>
+		    <input type=submit value='Submit otp' />
+		  </form>
+		  <br>
+		  <form method=post>
+		  	<input type=hidden name='resend-otp' value=0>
+		  	<input type='submit' value='resend otp' />
+		  </form>
+		</div>";
+	}
+	else
+		echo "<div style='text-align:center';>
+		  <h4>Please enter the OTP below</h4>
+		  <form method=post>
+		    <input name=otp-value type=number required/><br><br>
+		    <input type=submit value='Submit otp' />
+		  </form>
+		  <br>
+		  <form method=post>
+		  	<input type=hidden name='resend-otp' value=0>
+		  	<input type='submit' value='resend otp' />
+		  </form>
+		</div>";
 }
 
 
