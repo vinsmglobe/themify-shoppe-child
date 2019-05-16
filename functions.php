@@ -1,4 +1,10 @@
 <?php
+// Child Theme Style.css
+add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
+function my_theme_enqueue_styles() {
+    wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
+ 
+}
 // checks for null
 function IsNullOrEmptyString($str){
     return (!isset($str) || trim($str) === '');
@@ -67,7 +73,7 @@ function get_youtube_embed($youtube_url, $width=560, $height=315)
 	if(isset($parts['query'])) {
 		parse_str($parts['query'], $query);
 		if(isset($query['v'])) {
-			$embed_html = '<iframe width="100%" height="'.$height.'" src="https://www.youtube.com/embed/'.$query['v'].'" frameborder="0" allowfullscreen></iframe>';
+			$embed_html = '<iframe width="100%" height="'.$height.'" src="" data-src="https://www.youtube.com/embed/'.$query['v'].'" frameborder="0" allowfullscreen></iframe>';
 		}
 	}
 	return $embed_html;
@@ -93,7 +99,7 @@ function product_price_start_add_video_audio() {
 // 				break;
 // 			}
 			$vidFb = trim($vidFb);
-			$videoFacebookHTML .='<iframe width="100%" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media" allowFullScreen="true" scrolling="no" frameborder="no" src="https://www.facebook.com/plugins/video.php?href=' . $vidFb . '"></iframe><br/>';
+			$videoFacebookHTML .='<iframe width="100%" height="300" style="border:none;overflow:hidden" src="" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media" allowFullScreen="true" scrolling="no" frameborder="no" data-src="https://www.facebook.com/plugins/video.php?href=' . $vidFb . '"></iframe><br/>';
 		}
 		echo $videoFacebookHTML;
 	} 
@@ -105,7 +111,7 @@ function product_price_start_add_video_audio() {
 		$audios = explode(",", $audioField);
 		foreach($audios as $aud) {
 			$aud = trim($aud);
-			$audioHTML .= "<iframe width='100%' height='500' scrolling='no' frameborder='no' src='" . $aud . "'></iframe><br/>";
+			$audioHTML .= "<iframe width='100%' height='500' scrolling='no' frameborder='no' src='' data-src='" . $aud . "'></iframe><br/>";
 		}
 		echo '<h1 class="entry-title" style="font-size: 4em; text-align: center; text-transform: none;">Audios</h1>';
 		echo '<p style="border-bottom: 1px solid #efbe5a;width: 30px;text-align: center;margin: 0 auto;"><p><br/>';	
@@ -133,19 +139,79 @@ function add_star_rating() {
 	echo '<div class="star-rating"><span style="width:'.( ( $average / 5 ) * 100 ) . '%"><strong itemprop="ratingValue" class="rating">'.$average.'</strong> '.__( 'out of 5', 'woocommerce' ).'</span></div>';
 }
 
+/* QR'S CHANGES START */
+
 // custom add to cart button text
-add_filter( 'add_to_cart_text', 'woo_custom_single_add_to_cart_text' );                // < 2.1
-add_filter( 'woocommerce_product_single_add_to_cart_text', 'woo_custom_single_add_to_cart_text' );  // 2.1 +
-add_filter( 'woocommerce_product_add_to_cart_text', 'woo_custom_single_add_to_cart_text' );
-function woo_custom_single_add_to_cart_text() {
-    return __( 'See Price and Book', 'woocommerce' ); 
+add_filter( 'add_to_cart_text', 'woo_custom_single_add_to_cart_text', 10, 2 );                // < 2.1
+add_filter( 'woocommerce_product_single_add_to_cart_text', 'woo_custom_single_add_to_cart_text', 10, 2 );  // 2.1 +
+add_filter( 'woocommerce_product_add_to_cart_text', 'woo_custom_single_add_to_cart_text', 10, 2 );
+function woo_custom_single_add_to_cart_text($price, $product) {
+	if (0 == $product -> get_price()){
+    return __( 'See Price and Book', 'woocommerce' );
+	}
+	else {
+		return __('Book Now', 'woocommerce');
+	}
 }
 
 // custom get quote button text
-add_filter( 'woocommerce_order_button_text', 'woo_custom_order_button_text' ); 
-function woo_custom_order_button_text() {
-    return __( 'See Price and Book', 'woocommerce' ); 
+add_filter( 'woocommerce_order_button_text', 'woo_custom_order_button_text'); 
+function woo_custom_order_button_text(){
+	$total = 0;
+		$order_id = absint( get_query_var( 'order-pay' ) );
+
+// 		Gets order total from "pay for order" page.
+		if ( 0 < $order_id ) {
+			$order = wc_get_order( $order_id );
+			$total = (float) $order->get_total();
+
+			// Gets order total from cart/checkout.
+		} elseif ( 0 == WC()->cart->total ) {
+			$total = (float) WC()->cart->total;
+			return __('See Price and Book');
+		}
+	else{
+		return __('Book Now');
+	}
 }
+
+
+//Remove budget field if Artist is prepaid
+
+add_filter( 'woocommerce_checkout_fields', 'conditional_checkout_fields_products' );
+function conditional_checkout_fields_products( $fields ) {
+ 	$totaly = 0;
+		$order_id = absint( get_query_var( 'order-pay' ) );
+
+// 		Gets order total from "pay for order" page.
+		if ( 0 < $order_id ) {
+			$order = wc_get_order( $order_id );
+			$totaly = (float) $order->get_total();
+
+			// Gets order total from cart/checkout.
+		} elseif ( 0 < WC()->cart->total ) {
+			$totaly = (float) WC()->cart->total;
+            unset( $fields['billing']['billing_event_budget'] );
+        }
+
+    return $fields;
+}
+	
+
+//Conditional visibility of price
+add_filter( 'woocommerce_get_price_html', 'price_free_zero_empty', 100, 2 );
+ 
+function price_free_zero_empty( $price, $product ){
+
+if ( '' === $product->get_price() || 0 == $product->get_price() ) {
+   $price = '<span class="woocommerce-Price-amount amount"></span>';
+} 
+
+return $price;
+}
+
+/*QR'S CHANGES END*/
+
 
 /* add product filter on shop and category pages */
 // add_action( 'woocommerce_before_shop_loop', 'product_filter', 15 );
@@ -193,12 +259,35 @@ function woo_before_main_content() {
 
 			echo '<div>';
 				echo '<div>';
-					echo '<img src="' . get_field('banner_hero_image') . '" style="width:100%;">';
+					echo '<img class="tag-desktop-hero" src="' . get_field('banner_hero_image') . '" style="width:100%;">';
+					echo '<img class="tag-mobile-hero" src="' . get_field('mobile_banner_hero_image') . '" style="width:100%;display:none;">';		
 				echo '</div>';
 				echo '<div>';
 					echo '<h2 class="wedding-title">' . get_field('banner_title') . '</h2>';
 					echo '<p class="wedding-subtitle">' . get_field('banner_description') . '</p>';
+					echo '<style>#nf-form-8-cont,#nf-form-9-cont,#nf-form-10-cont,#nf-form-11-cont,#nf-form-12-cont,#nf-form-13-cont{text-align:center;}</style>';
+					if (strpos($pageUrl, 'wedding-anchor-emcee') !== false) {
+						echo '<p class="wedding-subtitle">' . do_shortcode('[ninja_form id=8]') . '</p>';
+					}
+					if (strpos($pageUrl, 'wedding-band') !== false) {
+						echo '<p class="wedding-subtitle">' . do_shortcode('[ninja_form id=9]') . '</p>';
+					}
+					if (strpos($pageUrl, 'wedding-dj') !== false) {
+						echo '<p class="wedding-subtitle">' . do_shortcode('[ninja_form id=10]') . '</p>';
+					}
+					if (strpos($pageUrl, 'wedding-dancer') !== false) {
+						echo '<p class="wedding-subtitle">' . do_shortcode('[ninja_form id=11]') . '</p>';
+					}
+					if (strpos($pageUrl, 'wedding-instrumentalist') !== false) {
+						echo '<p class="wedding-subtitle">' . do_shortcode('[ninja_form id=12]') . '</p>';
+					}
+					if (strpos($pageUrl, 'wedding-singer') !== false) {
+						echo '<p class="wedding-subtitle">' . do_shortcode('[ninja_form id=13]') . '</p>';
+					}
+					
 				echo '</div>';
+				
+				/*
 				echo '<div class="row">';
 				$video1Field = get_field('banner_youtube_video_1');
 				if(!IsNullOrEmptyString($video1Field)) {
@@ -263,12 +352,15 @@ function woo_before_main_content() {
 					echo '</div>';
 				}
 				echo '</div>';
+				
+
 			echo '</div><br/><br/>';
 			echo '<div class="black-strip">
 				<p class="wedding-subtitle white">4 YEARS OF EXPERIENCE IN</p>
 				<p class="wedding-subtitle pink">ARTIST BOOKING</p>
 				<p class="wedding-subtitle white">We have the know-how you need.</p>
 			</div>';
+			*/
 		endwhile;
 	}
 }
@@ -280,6 +372,18 @@ function woo_after_main_content() {
 	global $wp;
 	$pageUrl = $wp->request;
 	if (strpos($pageUrl, 'book-online') !== false) {
+		$args = array(
+			'post_type' => 'weddingtagpages',
+			'meta_query' => array(
+				array(
+					'key'     => 'tag_url_slug',
+					'value'   => explode("/", $pageUrl)[1]
+				)
+			)
+		);
+			$obituary_query = new WP_Query($args);
+	
+		while ($obituary_query->have_posts()) : $obituary_query->the_post();
 		if (strpos($pageUrl, 'book-online/wedding') !== false) {
 		echo '
 	<div>
@@ -356,8 +460,9 @@ function woo_after_main_content() {
 	</div>
 	<br/><br/>';
 		}
+		
 		// Testimonials
-		echo '
+			echo '
 	<div>
 		<h2 class="wedding-title">What Clients Say About Us</h2>
 		<p class="wedding-subtitle">
@@ -403,6 +508,14 @@ function woo_after_main_content() {
 			</div>
 		</div>
 	</div>
+		
+<div class=container-fluid>
+	<div class="row d-flex">
+	<div class="col-sm">
+		 ' . get_field(content_block) . ' 
+	</div>
+	</div>
+</div>
 
 	<div class="wedding-milestone">
 		<div>
@@ -439,6 +552,7 @@ function woo_after_main_content() {
 			</div>
 		</div>
 	</div>';
+		endwhile;
 	}
 	else {
 		echo '<div style="text-align:center;padding-left:10%;padding-right:10%;">';
@@ -452,6 +566,7 @@ function woo_after_main_content() {
 
 add_action('woocommerce_thankyou', 'woo_thank_you_custom', 10, 1);
 
+
 function woo_thank_you_custom($order_id) { //<--check this line
 	session_start();
 	$order = wc_get_order($order_id);
@@ -459,12 +574,36 @@ function woo_thank_you_custom($order_id) { //<--check this line
 	$orderemail = $order->get_billing_email();
 	$orderphone = $order->get_billing_phone();
 	$mess='';
-	if(!isset($_SESSION['otp'])){
+	
+	
+		debug_to_console($_SESSION['otp']); 
+		debug_to_console($_SESSION['otp_order_id']); 
+		debug_to_console($order_id); 
+	
+	
+	
+	if(!isset($_SESSION['otp']) || 
+		!isset($_SESSION['otp_order_id']) || 
+			 (isset($_SESSION['otp_order_id']) && $_SESSION['otp_order_id'] != $order_id )){
+		
+		unset ($_SESSION["otp"]);
+		unset ($_SESSION["otp_order_id"]);
+		
+		debug_to_console("I am called before!"); 
 		$_SESSION['otp']=rand(100000, 999999);
+		$_SESSION['otp_order_id'] = $order_id;  
+		
+		
+		debug_to_console($_SESSION['otp']); 
+		debug_to_console($_SESSION['otp_order_id']); 
+		debug_to_console($order_id); 
+		
+		
+
 		$mess="Dear $orderusername, Your OTP for verifying your query on StarClinch is ".$_SESSION['otp']." . Kindly verify to confirm your identity.";
-		file_get_contents("http://msg.mtalkz.com/V2/http-api.php?apikey=-----mTalkz-key-------&senderid=STARCL&number=$orderphone&message=".str_replace(' ', '%20', $mess)."&format=json");
+		file_get_contents("http://msg.mtalkz.com/V2/http-api.php?apikey=tDwuSCs7VMnugioA&senderid=STARCL&number=$orderphone&message=".str_replace(' ', '%20', $mess)."&format=json");
 		echo "<div style='text-align:center';>
-		  <h4>Please enter the OTP below</h4>
+		  <h4>Please enter the OTP below - </h4>
 		  <form method=post>
 		    <input name=otp-value type=number required/><br><br>
 		    <input type=submit value='Submit otp' />
@@ -478,7 +617,7 @@ function woo_thank_you_custom($order_id) { //<--check this line
 	}
 	elseif (isset($_POST['resend-otp'])) {
 		$mess="Dear $orderusername, Your OTP for verifying your query on StarClinch is ".$_SESSION['otp']." . Kindly verify to confirm your identity.";
-		file_get_contents("http://msg.mtalkz.com/V2/http-api.php?apikey=-----mTalkz-key-------&senderid=STARCL&number=$orderphone&message=".str_replace(' ', '%20', $mess)."&format=json");
+		file_get_contents("http://msg.mtalkz.com/V2/http-api.php?apikey=tDwuSCs7VMnugioA&senderid=STARCL&number=$orderphone&message=".str_replace(' ', '%20', $mess)."&format=json");
 		echo "<div style='text-align:center';>
 		  <h4>OTP has been resent<br>Please enter the OTP below</h4>
 		  <form method=post>
@@ -506,6 +645,7 @@ function woo_thank_you_custom($order_id) { //<--check this line
 			file_get_contents($url, false, $context);
 		    $orderstat = $order->get_status();
 		    $view_order_url = $order->get_view_order_url();   
+
 		    foreach ($order->get_items() as $item_id => $item) {
 		        $product = $item->get_product();
 		        $product_id = null;
@@ -523,11 +663,13 @@ function woo_thank_you_custom($order_id) { //<--check this line
 		            echo '</div>';
 		        }
 		    }
+
 		    echo '<div style="text-align:center">';
 		    // echo $orderusername;
 		    // echo $orderemail;
 		    // echo $orderphone;
 			// echo $view_order_url;
+
 		    if (($orderstat == 'completed')) {
 		        echo "<h2>Your request has been completed.</h2>";
 		    } 
@@ -537,12 +679,18 @@ function woo_thank_you_custom($order_id) { //<--check this line
 		    elseif (($orderstat == 'pending')) {
 		        echo "<h2>Your request has been received.</h2>";
 		    }
+
 		    // echo "<h2>Subscribe to push notification updates on your request.</h2><br/>";
 		    // echo '<button onclick="window._izq = window._izq||[]; window._izq.push([\'triggerPrompt\']);">Subscribe</button>';
 		    // echo '<button onclick=\'window._izq.push(["updateSubscription","subscribe"]);\'>Subscribe</button>';
 			// echo '<button onclick=\'window._izq.push(["updateSubscription","unsubscribe"]);\'>Unsubscribe</button>';
-		    echo '<br/><br/><p>If you dont hear from us withing 12 hours, contact us on the email or phone number mentioned at the bottom of this page.</p>';
+
+		    echo '<br/><br/><p>If you dont hear from us within 12 hours, contact us on the email or phone number mentioned at the bottom of this page.</p> <br>';
+echo '<a href="https://starclinch.com/browse"><button>Continue Shopping</button></a>';
 		    echo '</div>';
+			debug_to_console("this did happen"); 
+			unset ($_SESSION["otp"]);
+			unset ($_SESSION["otp_order_id"]);
 		}
 		else
 			echo "<div style='text-align:center';>
@@ -560,7 +708,7 @@ function woo_thank_you_custom($order_id) { //<--check this line
 	}
 	else
 		echo "<div style='text-align:center';>
-		  <h4>Please enter the OTP below</h4>
+		  <h4>Please enter the OTP below:</h4>
 		  <form method=post>
 		    <input name=otp-value type=number required/><br><br>
 		    <input type=submit value='Submit otp' />
@@ -573,16 +721,6 @@ function woo_thank_you_custom($order_id) { //<--check this line
 		</div>";
 }
 
-
-// custom order thank you page title : not working
-// add_filter( 'wpex_title', 'woo_custom_title_order_received', 99 );
-// function woo_custom_title_order_received( $title, $id ) {
-// 	if ( function_exists( 'is_order_received_page' ) && 
-// 	     is_order_received_page() && get_the_ID() === $id ) {
-// 		$title = "Thank you!";
-// 	}
-// 	return $title;
-// }
 
 add_action('signup_integromat', 'signup_integromat');
 function signup_integromat($data){
@@ -625,5 +763,134 @@ function qualify_integromat($data){
 	$context  = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
 }
+
+// Farukh  its change the label of Sidebar
+
+add_filter( 'woocommerce_register_post_type_product', 'custom_post_type_label_woo' );
+
+function custom_post_type_label_woo( $args ){
+
+	global $current_user;
+	
+	$labels = array(
+        'name'               => __( 'Artists', 'your-custom-plugin' ),
+        'singular_name'      => __( 'Artist', 'your-custom-plugin' ),
+        'menu_name'          => _x( 'Artists', 'Admin menu name', 'your-custom-plugin' ),
+      
+    );
+
+    $args['labels'] = $labels;
+    $args['description'] = __( 'This is where you can add new tours to your store.', 'your-custom-plugin' );
+    return $args;
+}
+
+
+add_action( 'after_setup_theme', 'yourtheme_setup' );
+ 
+function yourtheme_setup() {
+    add_theme_support( 'wc-product-gallery-zoom' );
+    add_theme_support( 'wc-product-gallery-lightbox' );
+    add_theme_support( 'wc-product-gallery-slider' );
+}
+
+
+// Add filter
+add_filter( 'woocommerce_placeholder_img_src', 'starclinch_custom_woocommerce_placeholder', 10 );
+/**
+ * Function to return new placeholder image URL.
+ */
+function starclinch_custom_woocommerce_placeholder( $image_url ) {
+  $image_url = 'https://starclinch.com/wp-content/uploads/2019/03/Starclinch-Logo_450x450.png';  // change this to the URL to your custom placeholder
+  return $image_url;
+}
+
+
+
+
+
+function itsme_disable_feed() {
+ wp_die( __( 'No feed available, please visit the <a href="'. esc_url( home_url( '/' ) ) .'">homepage</a>!' ) );
+}
+
+add_action('do_feed', 'itsme_disable_feed', 1);
+add_action('do_feed_rdf', 'itsme_disable_feed', 1);
+add_action('do_feed_rss', 'itsme_disable_feed', 1);
+add_action('do_feed_rss2', 'itsme_disable_feed', 1);
+add_action('do_feed_atom', 'itsme_disable_feed', 1);
+add_action('do_feed_rss2_comments', 'itsme_disable_feed', 1);
+add_action('do_feed_atom_comments', 'itsme_disable_feed', 1);
+
+
+
+remove_action( 'wp_head', 'feed_links_extra', 3 );
+remove_action( 'wp_head', 'feed_links', 2 );
+
+//Farukh Code
+
+//* Adding DNS Prefetching
+function ism_dns_prefetch() {
+    echo '<meta http-equiv="x-dns-prefetch-control" content="on">
+<link rel="dns-prefetch" href="//fullstory.com" />
+<link rel="dns-prefetch" href="//rs.fullstory.com" />
+<link rel="dns-prefetch" href="//js.intercomcdn.com" />
+<link rel="dns-prefetch" href="//api-iam.intercom.io" />
+<link rel="dns-prefetch" href="//cdn.useproof.com" />
+<link rel="dns-prefetch" href="//api.useproof.com" />
+<link rel="dns-prefetch" href="//www.gstatic.com" />
+<link rel="dns-prefetch" href="//fonts.gstatic.com" />
+<link rel="dns-prefetch" href="//px.ads.linkedin.com" />
+<link rel="dns-prefetch" href="//www.linkedin.com" />
+<link rel="dns-prefetch" href="//nexus-websocket-a.intercom.io" />
+<link rel="dns-prefetch" href="//nexus-websocket-b.intercom.io" />
+<link rel="dns-prefetch" href="//widget.intercom.io" />
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+<link rel="dns-prefetch" href="//widget.privy.com" />
+<link rel="dns-prefetch" href="//assets.privy.com" />
+<link rel="dns-prefetch" href="//api.privy.com" />
+<link rel="dns-prefetch" href="//events.privy.com" />
+<link rel="dns-prefetch" href="//tri.privy.com" />
+<link rel="dns-prefetch" href="//privymktg.com" />
+<link rel="dns-prefetch" href="//snap.licdn.com" />
+<link rel="dns-prefetch" href="//platform-api.sharethis.com" />
+<link rel="dns-prefetch" href="//c.sharethis.mgr.consensu.org" />
+<link rel="dns-prefetch" href="//l.sharethis.com" />
+<link rel="dns-prefetch" href="//proof-2.firebaseio.com" />
+<link rel="dns-prefetch" href="//proof-3.firebaseio.com" />
+<link rel="dns-prefetch" href="//proof-2.firebaseio.com" />
+<link rel="dns-prefetch" href="//proof-3.firebaseio.com" />
+<link rel="dns-prefetch" href="//www.googletagmanager.com" />
+';
+	
+}
+add_action('wp_head', 'ism_dns_prefetch', 0);
+
+
+
+
+
+
+// validation for Billing Phone checkout field
+add_action('woocommerce_checkout_process', 'custom_validate_billing_phone');
+function custom_validate_billing_phone() {
+    
+		$is_correct = preg_match('/^[6-9][0-9]{9}$/', $_POST['billing_phone']) && (strlen($_POST['billing_phone'])==10);
+		if ( $_POST['billing_phone'] && !$is_correct) {
+			wc_add_notice( __( 'Incorrect <strong>Mobile Numbe</strong>r! Please enter a valid <strong>10 digit Indian</strong> mobile number' ), 'error' );
+		}
+	
+}
+
+
+function debug_to_console( $data ) {
+    $output = $data;
+    if ( is_array( $output ) )
+        $output = implode( ',', $output);
+
+    echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
+}
+
+// add_action( 'woocommerce_before_checkout_billing_form', function() {
+// 	echo '<a id="gtq-btn1" href="https://starclinch.com/browse"><button>Continue Shopping</button></a> <br>';
+// });
 
 ?>
